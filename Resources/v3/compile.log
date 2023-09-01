@@ -1,0 +1,384 @@
+gcc: error: output: No such file or directory
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/arm-linux-gnueabihf/10/lto-wrapper
+Target: arm-linux-gnueabihf
+Configured with: ../src/configure -v --with-pkgversion='Raspbian 10.2.1-6+rpi1' --with-bugurl=file:///usr/share/doc/gcc-10/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-10 --program-prefix=arm-linux-gnueabihf- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libitm --disable-libquadmath --disable-libquadmath-support --enable-plugin --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-sjlj-exceptions --with-arch=armv6 --with-fpu=vfp --with-float=hard --disable-werror --enable-checking=release --build=arm-linux-gnueabihf --host=arm-linux-gnueabihf --target=arm-linux-gnueabihf
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 10.2.1 20210110 (Raspbian 10.2.1-6+rpi1) 
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/arm-linux-gnueabihf/10/lto-wrapper
+Target: arm-linux-gnueabihf
+Configured with: ../src/configure -v --with-pkgversion='Raspbian 10.2.1-6+rpi1' --with-bugurl=file:///usr/share/doc/gcc-10/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-10 --program-prefix=arm-linux-gnueabihf- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libitm --disable-libquadmath --disable-libquadmath-support --enable-plugin --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-sjlj-exceptions --with-arch=armv6 --with-fpu=vfp --with-float=hard --disable-werror --enable-checking=release --build=arm-linux-gnueabihf --host=arm-linux-gnueabihf --target=arm-linux-gnueabihf
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 10.2.1 20210110 (Raspbian 10.2.1-6+rpi1) 
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'output'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /usr/lib/gcc/arm-linux-gnueabihf/10/cc1plus -quiet -v -I /usr/local/include/SDL2 -I ./ -I ./lib -I ~/include -I /usr/include -I /opt/vc/include -I opt/vc/src/hello_pi/libs -imultilib . -imultiarch arm-linux-gnueabihf -D_GNU_SOURCE -D _REENTRANT main.cpp -quiet -dumpbase main.cpp -mfloat-abi=hard -mfpu=vfp -mtls-dialect=gnu -marm -march=armv6+fp -auxbase main -version -o /tmp/ccOrnuJa.s
+GNU C++14 (Raspbian 10.2.1-6+rpi1) version 10.2.1 20210110 (arm-linux-gnueabihf)
+	compiled by GNU C version 10.2.1 20210110, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version isl-0.23-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "/usr/include/arm-linux-gnueabihf/c++/10"
+ignoring nonexistent directory "/usr/local/include/arm-linux-gnueabihf"
+ignoring nonexistent directory "/usr/lib/gcc/arm-linux-gnueabihf/10/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/arm-linux-gnueabihf/10/../../../../arm-linux-gnueabihf/include"
+ignoring nonexistent directory "./lib"
+ignoring nonexistent directory "~/include"
+ignoring duplicate directory "/usr/include"
+  as it is a non-system directory that duplicates a system directory
+ignoring nonexistent directory "/opt/vc/include"
+ignoring nonexistent directory "opt/vc/src/hello_pi/libs"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/local/include/SDL2
+ ./
+ /usr/include/c++/10
+ /usr/include/arm-linux-gnueabihf/c++/10
+ /usr/include/c++/10/backward
+ /usr/lib/gcc/arm-linux-gnueabihf/10/include
+ /usr/local/include
+ /usr/include/arm-linux-gnueabihf
+ /usr/include
+End of search list.
+GNU C++14 (Raspbian 10.2.1-6+rpi1) version 10.2.1 20210110 (arm-linux-gnueabihf)
+	compiled by GNU C version 10.2.1 20210110, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version isl-0.23-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: db87415434a7c3b71e7ddc297314da99
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'output'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ as -v -I /usr/local/include/SDL2 -I ./ -I ./lib -I ~/include -I /usr/include -I /opt/vc/include -I opt/vc/src/hello_pi/libs -march=armv6 -mfloat-abi=hard -mfpu=vfp -meabi=5 -o /tmp/ccqTJufe.o /tmp/ccOrnuJa.s
+GNU assembler version 2.35.2 (arm-linux-gnueabihf) using BFD version (GNU Binutils for Raspbian) 2.35.2
+COMPILER_PATH=/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/:/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/
+LIBRARY_PATH=/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/:/usr/lib/gcc/arm-linux-gnueabihf/10/../../../:/lib/arm-linux-gnueabihf/:/lib/:/usr/lib/arm-linux-gnueabihf/:/usr/lib/
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'output'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /usr/lib/gcc/arm-linux-gnueabihf/10/collect2 -plugin /usr/lib/gcc/arm-linux-gnueabihf/10/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-linux-gnueabihf/10/lto-wrapper -plugin-opt=-fresolution=/tmp/cc1kpR6c.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -dynamic-linker /lib/ld-linux-armhf.so.3 -X --hash-style=gnu --as-needed -m armelf_linux_eabi -o output /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crt1.o /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crti.o /usr/lib/gcc/arm-linux-gnueabihf/10/crtbegin.o -L/usr/local/lib -L./ -L./lib -L~/lib -L/lib -L/usr/lib -L/usr/local/lib -L/usr/lib/arm-linux-gnueabihf -L/opt/vc/lib -L/usr/lib/gcc/arm-linux-gnueabihf/10 -L/usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf -L/usr/lib/gcc/arm-linux-gnueabihf/10/../../.. -L/lib/arm-linux-gnueabihf -L/usr/lib/arm-linux-gnueabihf -rpath /usr/local/lib --enable-new-dtags -lSDL2 /tmp/ccqTJufe.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/arm-linux-gnueabihf/10/crtend.o /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crtn.o
+/usr/bin/ld: /tmp/ccqTJufe.o: in function `main':
+main.cpp:(.text+0x24): undefined reference to `SDL_SetHint'
+/usr/bin/ld: main.cpp:(.text+0x2c): undefined reference to `SDL_Init'
+/usr/bin/ld: main.cpp:(.text+0x4c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x54): undefined reference to `SDL_GetError'
+/usr/bin/ld: main.cpp:(.text+0x64): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x74): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x84): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x94): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xb8): undefined reference to `SDL_CreateWindow'
+/usr/bin/ld: main.cpp:(.text+0xd8): undefined reference to `SDL_CreateRenderer'
+/usr/bin/ld: main.cpp:(.text+0xf0): undefined reference to `IMG_Init'
+/usr/bin/ld: main.cpp:(.text+0x11c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x12c): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x134): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x144): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x154): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x164): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x174): undefined reference to `IMG_Load'
+/usr/bin/ld: /tmp/ccqTJufe.o:main.cpp:(.text+0x184): more undefined references to `IMG_Load' follow
+/usr/bin/ld: /tmp/ccqTJufe.o: in function `main':
+main.cpp:(.text+0x228): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x238): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x274): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x284): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x2a0): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2b4): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2c8): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2dc): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x318): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x354): undefined reference to `SDL_GetWindowSize'
+/usr/bin/ld: main.cpp:(.text+0x360): undefined reference to `TTF_Init'
+/usr/bin/ld: main.cpp:(.text+0x36c): undefined reference to `TTF_OpenFont'
+/usr/bin/ld: main.cpp:(.text+0x380): undefined reference to `TTF_OpenFont'
+/usr/bin/ld: main.cpp:(.text+0x3cc): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x3dc): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x460): undefined reference to `SDL_PollEvent'
+/usr/bin/ld: main.cpp:(.text+0x498): undefined reference to `SDL_GetKeyboardState'
+/usr/bin/ld: main.cpp:(.text+0x57c): undefined reference to `SDL_SetRenderDrawColor'
+/usr/bin/ld: main.cpp:(.text+0x584): undefined reference to `SDL_RenderClear'
+/usr/bin/ld: main.cpp:(.text+0x598): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x600): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x628): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x658): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x6c8): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x708): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x738): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x77c): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x790): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x7b4): undefined reference to `TTF_RenderText_Blended'
+/usr/bin/ld: main.cpp:(.text+0x7c8): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x854): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x878): undefined reference to `TTF_RenderText_Blended'
+/usr/bin/ld: main.cpp:(.text+0x88c): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x918): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x920): undefined reference to `SDL_RenderPresent'
+/usr/bin/ld: main.cpp:(.text+0x92c): undefined reference to `SDL_DestroyWindow'
+/usr/bin/ld: main.cpp:(.text+0x934): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x93c): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x944): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x94c): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x954): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x95c): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x960): undefined reference to `IMG_Quit'
+/usr/bin/ld: main.cpp:(.text+0x964): undefined reference to `SDL_Quit'
+/usr/bin/ld: main.cpp:(.text+0x9c4): undefined reference to `std::cout'
+/usr/bin/ld: main.cpp:(.text+0x9c8): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)'
+/usr/bin/ld: /tmp/ccqTJufe.o: in function `open_serial()':
+main.cpp:(.text+0xa80): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xa9c): undefined reference to `std::ostream::operator<<(int)'
+/usr/bin/ld: main.cpp:(.text+0xaac): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xad4): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xae4): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xc10): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xc2c): undefined reference to `std::ostream::operator<<(int)'
+/usr/bin/ld: main.cpp:(.text+0xc3c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xc64): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xc74): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xca4): undefined reference to `std::cout'
+/usr/bin/ld: main.cpp:(.text+0xcac): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)'
+/usr/bin/ld: /tmp/ccqTJufe.o: in function `print_array(char*, int)':
+main.cpp:(.text+0xe2c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char)'
+/usr/bin/ld: main.cpp:(.text+0xe48): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xe5c): undefined reference to `std::cout'
+/usr/bin/ld: main.cpp:(.text+0xe60): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)'
+/usr/bin/ld: /tmp/ccqTJufe.o: in function `__static_initialization_and_destruction_0(int, int)':
+main.cpp:(.text+0xe98): undefined reference to `std::ios_base::Init::Init()'
+/usr/bin/ld: main.cpp:(.text+0xec4): undefined reference to `std::ios_base::Init::~Init()'
+collect2: error: ld returned 1 exit status
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/arm-linux-gnueabihf/10/lto-wrapper
+Target: arm-linux-gnueabihf
+Configured with: ../src/configure -v --with-pkgversion='Raspbian 10.2.1-6+rpi1' --with-bugurl=file:///usr/share/doc/gcc-10/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-10 --program-prefix=arm-linux-gnueabihf- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libitm --disable-libquadmath --disable-libquadmath-support --enable-plugin --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-sjlj-exceptions --with-arch=armv6 --with-fpu=vfp --with-float=hard --disable-werror --enable-checking=release --build=arm-linux-gnueabihf --host=arm-linux-gnueabihf --target=arm-linux-gnueabihf
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 10.2.1 20210110 (Raspbian 10.2.1-6+rpi1) 
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'sdl2_test'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /usr/lib/gcc/arm-linux-gnueabihf/10/cc1plus -quiet -v -I /usr/local/include/SDL2 -I ./ -I ./lib -I ~/include -I /usr/include -I /opt/vc/include -I opt/vc/src/hello_pi/libs -imultilib . -imultiarch arm-linux-gnueabihf -D_GNU_SOURCE -D _REENTRANT main.cpp -quiet -dumpbase main.cpp -mfloat-abi=hard -mfpu=vfp -mtls-dialect=gnu -marm -march=armv6+fp -auxbase main -version -o /tmp/cc6vuzWt.s
+GNU C++14 (Raspbian 10.2.1-6+rpi1) version 10.2.1 20210110 (arm-linux-gnueabihf)
+	compiled by GNU C version 10.2.1 20210110, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version isl-0.23-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "/usr/include/arm-linux-gnueabihf/c++/10"
+ignoring nonexistent directory "/usr/local/include/arm-linux-gnueabihf"
+ignoring nonexistent directory "/usr/lib/gcc/arm-linux-gnueabihf/10/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/arm-linux-gnueabihf/10/../../../../arm-linux-gnueabihf/include"
+ignoring nonexistent directory "./lib"
+ignoring nonexistent directory "~/include"
+ignoring duplicate directory "/usr/include"
+  as it is a non-system directory that duplicates a system directory
+ignoring nonexistent directory "/opt/vc/include"
+ignoring nonexistent directory "opt/vc/src/hello_pi/libs"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/local/include/SDL2
+ ./
+ /usr/include/c++/10
+ /usr/include/arm-linux-gnueabihf/c++/10
+ /usr/include/c++/10/backward
+ /usr/lib/gcc/arm-linux-gnueabihf/10/include
+ /usr/local/include
+ /usr/include/arm-linux-gnueabihf
+ /usr/include
+End of search list.
+GNU C++14 (Raspbian 10.2.1-6+rpi1) version 10.2.1 20210110 (arm-linux-gnueabihf)
+	compiled by GNU C version 10.2.1 20210110, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version isl-0.23-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: db87415434a7c3b71e7ddc297314da99
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'sdl2_test'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ as -v -I /usr/local/include/SDL2 -I ./ -I ./lib -I ~/include -I /usr/include -I /opt/vc/include -I opt/vc/src/hello_pi/libs -march=armv6 -mfloat-abi=hard -mfpu=vfp -meabi=5 -o /tmp/ccthNZat.o /tmp/cc6vuzWt.s
+GNU assembler version 2.35.2 (arm-linux-gnueabihf) using BFD version (GNU Binutils for Raspbian) 2.35.2
+COMPILER_PATH=/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/:/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/
+LIBRARY_PATH=/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/:/usr/lib/gcc/arm-linux-gnueabihf/10/../../../:/lib/arm-linux-gnueabihf/:/lib/:/usr/lib/arm-linux-gnueabihf/:/usr/lib/
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'sdl2_test'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /usr/lib/gcc/arm-linux-gnueabihf/10/collect2 -plugin /usr/lib/gcc/arm-linux-gnueabihf/10/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-linux-gnueabihf/10/lto-wrapper -plugin-opt=-fresolution=/tmp/cc6CO58v.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -dynamic-linker /lib/ld-linux-armhf.so.3 -X --hash-style=gnu --as-needed -m armelf_linux_eabi -o sdl2_test /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crt1.o /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crti.o /usr/lib/gcc/arm-linux-gnueabihf/10/crtbegin.o -L/usr/local/lib -L./ -L./lib -L~/lib -L/lib -L/usr/lib -L/usr/local/lib -L/usr/lib/arm-linux-gnueabihf -L/opt/vc/lib -L/usr/lib/gcc/arm-linux-gnueabihf/10 -L/usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf -L/usr/lib/gcc/arm-linux-gnueabihf/10/../../.. -L/lib/arm-linux-gnueabihf -L/usr/lib/arm-linux-gnueabihf -rpath /usr/local/lib --enable-new-dtags -lSDL2 /tmp/ccthNZat.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/arm-linux-gnueabihf/10/crtend.o /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crtn.o
+/usr/bin/ld: /tmp/ccthNZat.o: in function `main':
+main.cpp:(.text+0x24): undefined reference to `SDL_SetHint'
+/usr/bin/ld: main.cpp:(.text+0x2c): undefined reference to `SDL_Init'
+/usr/bin/ld: main.cpp:(.text+0x4c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x54): undefined reference to `SDL_GetError'
+/usr/bin/ld: main.cpp:(.text+0x64): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x74): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x84): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x94): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xb8): undefined reference to `SDL_CreateWindow'
+/usr/bin/ld: main.cpp:(.text+0xd8): undefined reference to `SDL_CreateRenderer'
+/usr/bin/ld: main.cpp:(.text+0xf0): undefined reference to `IMG_Init'
+/usr/bin/ld: main.cpp:(.text+0x11c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x12c): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x134): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x144): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x154): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x164): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x174): undefined reference to `IMG_Load'
+/usr/bin/ld: /tmp/ccthNZat.o:main.cpp:(.text+0x184): more undefined references to `IMG_Load' follow
+/usr/bin/ld: /tmp/ccthNZat.o: in function `main':
+main.cpp:(.text+0x228): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x238): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x274): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x284): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x2a0): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2b4): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2c8): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2dc): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x318): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x354): undefined reference to `SDL_GetWindowSize'
+/usr/bin/ld: main.cpp:(.text+0x360): undefined reference to `TTF_Init'
+/usr/bin/ld: main.cpp:(.text+0x36c): undefined reference to `TTF_OpenFont'
+/usr/bin/ld: main.cpp:(.text+0x380): undefined reference to `TTF_OpenFont'
+/usr/bin/ld: main.cpp:(.text+0x3cc): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0x3dc): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0x460): undefined reference to `SDL_PollEvent'
+/usr/bin/ld: main.cpp:(.text+0x498): undefined reference to `SDL_GetKeyboardState'
+/usr/bin/ld: main.cpp:(.text+0x57c): undefined reference to `SDL_SetRenderDrawColor'
+/usr/bin/ld: main.cpp:(.text+0x584): undefined reference to `SDL_RenderClear'
+/usr/bin/ld: main.cpp:(.text+0x598): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x600): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x628): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x658): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x6c8): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x708): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x738): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x77c): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x790): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x7b4): undefined reference to `TTF_RenderText_Blended'
+/usr/bin/ld: main.cpp:(.text+0x7c8): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x854): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x878): undefined reference to `TTF_RenderText_Blended'
+/usr/bin/ld: main.cpp:(.text+0x88c): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x918): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x920): undefined reference to `SDL_RenderPresent'
+/usr/bin/ld: main.cpp:(.text+0x92c): undefined reference to `SDL_DestroyWindow'
+/usr/bin/ld: main.cpp:(.text+0x934): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x93c): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x944): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x94c): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x954): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x95c): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x960): undefined reference to `IMG_Quit'
+/usr/bin/ld: main.cpp:(.text+0x964): undefined reference to `SDL_Quit'
+/usr/bin/ld: main.cpp:(.text+0x9c4): undefined reference to `std::cout'
+/usr/bin/ld: main.cpp:(.text+0x9c8): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)'
+/usr/bin/ld: /tmp/ccthNZat.o: in function `open_serial()':
+main.cpp:(.text+0xa80): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xa9c): undefined reference to `std::ostream::operator<<(int)'
+/usr/bin/ld: main.cpp:(.text+0xaac): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xad4): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xae4): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xc10): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xc2c): undefined reference to `std::ostream::operator<<(int)'
+/usr/bin/ld: main.cpp:(.text+0xc3c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xc64): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*)'
+/usr/bin/ld: main.cpp:(.text+0xc74): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xca4): undefined reference to `std::cout'
+/usr/bin/ld: main.cpp:(.text+0xcac): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)'
+/usr/bin/ld: /tmp/ccthNZat.o: in function `print_array(char*, int)':
+main.cpp:(.text+0xe2c): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char)'
+/usr/bin/ld: main.cpp:(.text+0xe48): undefined reference to `std::ostream::operator<<(std::ostream& (*)(std::ostream&))'
+/usr/bin/ld: main.cpp:(.text+0xe5c): undefined reference to `std::cout'
+/usr/bin/ld: main.cpp:(.text+0xe60): undefined reference to `std::basic_ostream<char, std::char_traits<char> >& std::endl<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&)'
+/usr/bin/ld: /tmp/ccthNZat.o: in function `__static_initialization_and_destruction_0(int, int)':
+main.cpp:(.text+0xe98): undefined reference to `std::ios_base::Init::Init()'
+/usr/bin/ld: main.cpp:(.text+0xec4): undefined reference to `std::ios_base::Init::~Init()'
+collect2: error: ld returned 1 exit status
+Using built-in specs.
+COLLECT_GCC=g++
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/arm-linux-gnueabihf/10/lto-wrapper
+Target: arm-linux-gnueabihf
+Configured with: ../src/configure -v --with-pkgversion='Raspbian 10.2.1-6+rpi1' --with-bugurl=file:///usr/share/doc/gcc-10/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-10 --program-prefix=arm-linux-gnueabihf- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libitm --disable-libquadmath --disable-libquadmath-support --enable-plugin --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-sjlj-exceptions --with-arch=armv6 --with-fpu=vfp --with-float=hard --disable-werror --enable-checking=release --build=arm-linux-gnueabihf --host=arm-linux-gnueabihf --target=arm-linux-gnueabihf
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 10.2.1 20210110 (Raspbian 10.2.1-6+rpi1) 
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'sdl2_test' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /usr/lib/gcc/arm-linux-gnueabihf/10/cc1plus -quiet -v -I /usr/local/include/SDL2 -I ./ -I ./lib -I ~/include -I /usr/include -I /opt/vc/include -I opt/vc/src/hello_pi/libs -imultilib . -imultiarch arm-linux-gnueabihf -D_GNU_SOURCE -D _REENTRANT main.cpp -quiet -dumpbase main.cpp -mfloat-abi=hard -mfpu=vfp -mtls-dialect=gnu -marm -march=armv6+fp -auxbase main -version -o /tmp/ccoHjkRz.s
+GNU C++14 (Raspbian 10.2.1-6+rpi1) version 10.2.1 20210110 (arm-linux-gnueabihf)
+	compiled by GNU C version 10.2.1 20210110, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version isl-0.23-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "/usr/include/arm-linux-gnueabihf/c++/10"
+ignoring nonexistent directory "/usr/local/include/arm-linux-gnueabihf"
+ignoring nonexistent directory "/usr/lib/gcc/arm-linux-gnueabihf/10/include-fixed"
+ignoring nonexistent directory "/usr/lib/gcc/arm-linux-gnueabihf/10/../../../../arm-linux-gnueabihf/include"
+ignoring nonexistent directory "./lib"
+ignoring nonexistent directory "~/include"
+ignoring duplicate directory "/usr/include"
+  as it is a non-system directory that duplicates a system directory
+ignoring nonexistent directory "/opt/vc/include"
+ignoring nonexistent directory "opt/vc/src/hello_pi/libs"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/local/include/SDL2
+ ./
+ /usr/include/c++/10
+ /usr/include/arm-linux-gnueabihf/c++/10
+ /usr/include/c++/10/backward
+ /usr/lib/gcc/arm-linux-gnueabihf/10/include
+ /usr/local/include
+ /usr/include/arm-linux-gnueabihf
+ /usr/include
+End of search list.
+GNU C++14 (Raspbian 10.2.1-6+rpi1) version 10.2.1 20210110 (arm-linux-gnueabihf)
+	compiled by GNU C version 10.2.1 20210110, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.0, isl version isl-0.23-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: db87415434a7c3b71e7ddc297314da99
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'sdl2_test' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ as -v -I /usr/local/include/SDL2 -I ./ -I ./lib -I ~/include -I /usr/include -I /opt/vc/include -I opt/vc/src/hello_pi/libs -march=armv6 -mfloat-abi=hard -mfpu=vfp -meabi=5 -o /tmp/cc2j2NdB.o /tmp/ccoHjkRz.s
+GNU assembler version 2.35.2 (arm-linux-gnueabihf) using BFD version (GNU Binutils for Raspbian) 2.35.2
+COMPILER_PATH=/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/:/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/
+LIBRARY_PATH=/usr/lib/gcc/arm-linux-gnueabihf/10/:/usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/:/usr/lib/gcc/arm-linux-gnueabihf/10/../../../:/lib/arm-linux-gnueabihf/:/lib/:/usr/lib/arm-linux-gnueabihf/:/usr/lib/
+COLLECT_GCC_OPTIONS='-I' '/usr/local/include/SDL2' '-D' '_REENTRANT' '-L/usr/local/lib' '-L./' '-L./lib' '-L~/lib' '-L/lib' '-L/usr/lib' '-L/usr/local/lib' '-L/usr/lib/arm-linux-gnueabihf' '-L/opt/vc/lib' '-I' './' '-I' './lib' '-I' '~/include' '-I' '/usr/include' '-I' '/opt/vc/include' '-I' 'opt/vc/src/hello_pi/libs' '-v' '-o' 'sdl2_test' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /usr/lib/gcc/arm-linux-gnueabihf/10/collect2 -plugin /usr/lib/gcc/arm-linux-gnueabihf/10/liblto_plugin.so -plugin-opt=/usr/lib/gcc/arm-linux-gnueabihf/10/lto-wrapper -plugin-opt=-fresolution=/tmp/cc4K3JHC.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -dynamic-linker /lib/ld-linux-armhf.so.3 -X --hash-style=gnu --as-needed -m armelf_linux_eabi -o sdl2_test /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crt1.o /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crti.o /usr/lib/gcc/arm-linux-gnueabihf/10/crtbegin.o -L/usr/local/lib -L./ -L./lib -L~/lib -L/lib -L/usr/lib -L/usr/local/lib -L/usr/lib/arm-linux-gnueabihf -L/opt/vc/lib -L/usr/lib/gcc/arm-linux-gnueabihf/10 -L/usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf -L/usr/lib/gcc/arm-linux-gnueabihf/10/../../.. -L/lib/arm-linux-gnueabihf -L/usr/lib/arm-linux-gnueabihf -rpath /usr/local/lib --enable-new-dtags -lSDL2 /tmp/cc2j2NdB.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/arm-linux-gnueabihf/10/crtend.o /usr/lib/gcc/arm-linux-gnueabihf/10/../../../arm-linux-gnueabihf/crtn.o
+/usr/bin/ld: /tmp/cc2j2NdB.o: in function `main':
+main.cpp:(.text+0x24): undefined reference to `SDL_SetHint'
+/usr/bin/ld: main.cpp:(.text+0x2c): undefined reference to `SDL_Init'
+/usr/bin/ld: main.cpp:(.text+0x54): undefined reference to `SDL_GetError'
+/usr/bin/ld: main.cpp:(.text+0xb8): undefined reference to `SDL_CreateWindow'
+/usr/bin/ld: main.cpp:(.text+0xd8): undefined reference to `SDL_CreateRenderer'
+/usr/bin/ld: main.cpp:(.text+0xf0): undefined reference to `IMG_Init'
+/usr/bin/ld: main.cpp:(.text+0x134): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x144): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x154): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x164): undefined reference to `IMG_Load'
+/usr/bin/ld: main.cpp:(.text+0x174): undefined reference to `IMG_Load'
+/usr/bin/ld: /tmp/cc2j2NdB.o:main.cpp:(.text+0x184): more undefined references to `IMG_Load' follow
+/usr/bin/ld: /tmp/cc2j2NdB.o: in function `main':
+main.cpp:(.text+0x2a0): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2b4): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2c8): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x2dc): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x318): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x354): undefined reference to `SDL_GetWindowSize'
+/usr/bin/ld: main.cpp:(.text+0x360): undefined reference to `TTF_Init'
+/usr/bin/ld: main.cpp:(.text+0x36c): undefined reference to `TTF_OpenFont'
+/usr/bin/ld: main.cpp:(.text+0x380): undefined reference to `TTF_OpenFont'
+/usr/bin/ld: main.cpp:(.text+0x460): undefined reference to `SDL_PollEvent'
+/usr/bin/ld: main.cpp:(.text+0x498): undefined reference to `SDL_GetKeyboardState'
+/usr/bin/ld: main.cpp:(.text+0x57c): undefined reference to `SDL_SetRenderDrawColor'
+/usr/bin/ld: main.cpp:(.text+0x584): undefined reference to `SDL_RenderClear'
+/usr/bin/ld: main.cpp:(.text+0x598): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x600): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x628): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x658): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x6c8): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x708): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x738): undefined reference to `SDL_RenderCopyEx'
+/usr/bin/ld: main.cpp:(.text+0x77c): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x790): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x7b4): undefined reference to `TTF_RenderText_Blended'
+/usr/bin/ld: main.cpp:(.text+0x7c8): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x854): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x878): undefined reference to `TTF_RenderText_Blended'
+/usr/bin/ld: main.cpp:(.text+0x88c): undefined reference to `SDL_CreateTextureFromSurface'
+/usr/bin/ld: main.cpp:(.text+0x918): undefined reference to `SDL_RenderCopy'
+/usr/bin/ld: main.cpp:(.text+0x920): undefined reference to `SDL_RenderPresent'
+/usr/bin/ld: main.cpp:(.text+0x92c): undefined reference to `SDL_DestroyWindow'
+/usr/bin/ld: main.cpp:(.text+0x934): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x93c): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x944): undefined reference to `SDL_FreeSurface'
+/usr/bin/ld: main.cpp:(.text+0x94c): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x954): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x95c): undefined reference to `SDL_DestroyTexture'
+/usr/bin/ld: main.cpp:(.text+0x960): undefined reference to `IMG_Quit'
+/usr/bin/ld: main.cpp:(.text+0x964): undefined reference to `SDL_Quit'
+collect2: error: ld returned 1 exit status
