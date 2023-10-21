@@ -1,2 +1,2 @@
-cd ./v3
+cd /home/caleb/gavin/Resources/v3
 bash compile.sh

@@ -1,7 +1,10 @@
 cd /home/caleb/
 
-echo Killing current cluster
-killall output
+if [ $? -eq 0 ]
+then
+    echo Killing current cluster
+    killall output
+fi
 
 echo Removing old version
 sudo rm -R  gavin
