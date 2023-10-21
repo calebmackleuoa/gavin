@@ -1,12 +1,15 @@
-cd /home/caleb/gavin/
+cd /home/caleb/
 
 echo Killing current cluster
 killall output
 
-echo Pulling update from server
-git pull
+echo Removing old version
+rm -R  gavin
 
-cd Resources
+echo Cloning update from server
+git clone "https://github.com/calebmackleuoa/gavin.git"
+
+cd /home/caleb/gavin/Resources
 
 echo Compiling update
 bash compile.sh
