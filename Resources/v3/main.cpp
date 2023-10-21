@@ -166,8 +166,6 @@ int main(int argc, char* argv[]){
 	bool clusterRunning = true;
 	// Main application loop
 	
-
-		
 	// Open serial port
 	int port = -1;
 	if (device_code == DEVICE_CODE_GAVIN) {
@@ -394,7 +392,7 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render RPM
-		sprintf(rpmChar, "%d", (((int)rpm / 50) * 50));
+		sprintf(rpmChar, "%d", (((int)rpm / 10) * 10));
 		
 
 		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);
