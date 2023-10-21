@@ -4,7 +4,7 @@ echo Killing current cluster
 killall output
 
 echo Removing old version
-rm -R  gavin
+sudo rm -R  gavin
 
 echo Cloning update from server
 git clone "https://github.com/calebmackleuoa/gavin.git"
