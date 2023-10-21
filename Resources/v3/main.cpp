@@ -166,8 +166,13 @@ int main(int argc, char* argv[]){
 	bool clusterRunning = true;
 	// Main application loop
 	
+
+		
 	// Open serial port
-	int port = open_serial();
+	int port = -1;
+	if (device_code == DEVICE_CODE_GAVIN) {
+		int port = open_serial();
+	}
 	char serial_output[OUTPUT_SIZE];
 	int out_length;
 	
