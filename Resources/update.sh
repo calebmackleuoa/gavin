@@ -16,21 +16,30 @@ bash compile.sh
 sleep 2
 
 clear
-
 echo Update complete
 sleep 3
 
 clear
-echo Rebooting system 5
+echo Rebooting system in 5
 sleep 1
-echo Rebooting system 4
+
+clear
+echo Rebooting system in 4
 sleep 1
-echo Rebooting system 3
+
+clear
+echo Rebooting system in 3
 sleep 1
-echo Rebooting system 2
+
+clear
+echo Rebooting system in 2
 sleep 1
-echo Rebooting system 1
+
+clear
+echo Rebooting system in 1
 sleep 1
+
+clear
 echo Rebooting...
 sleep 2
 
