@@ -1,5 +1,5 @@
 echo Killing current cluster
-pkill -f output
+killall output
 
 echo Pulling update from server
 git pull
