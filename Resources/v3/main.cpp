@@ -1,28 +1,39 @@
-// COMPILE COMMAND:
-/*
 
-g++ main.cpp -o v3 -I/Library/Frameworks/SDL2.framework/Headers -I/Library/Frameworks/SDL2_image.framework/Headers -I/Library/Frameworks/SDL2_ttf.framework/Headers -F/Library/Frameworks -framework SDL2 -framework SDL2_Image -framework SDL2_ttf
+// ——————— DEVICE CODE ——————— //
+#define DEVICE_CODE_GAVIN 0
+#define DEVICE_CODE_DEV 1
 
-*/
+#ifdef __APPLE__
+int device_code = DEVICE_CODE_DEV;
+
+#else
+int device_code = DEVICE_CODE_GAVIN;
+#endif
+// ——————— DEVICE CODE ——————— //
 
 #include <iostream>
 #include <cmath>
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-
 #include <algorithm>
 #include <iterator>
 #include <fcntl.h> // Contains file controls like O_RDWR
 #include <errno.h> // Error integer and strerror() function
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
+#include <vector>
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 using namespace std;
 
 #define SCALE 1
 #define OUTPUT_SIZE 16
+
+#define SPEED_VECTOR_SIZE 25
+#define RPM_VECTOR_SIZE 5
+
+#define RPM_SIG_FIGS 2
 
 int open_serial();
 int close_serial(int serial_port);
@@ -43,7 +54,18 @@ int main(int argc, char* argv[]){
 		std::cout << "SDL video system is ready to go\n" << std::endl;
 	}
 
-	window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+	switch (device_code) {
+		case DEVICE_CODE_GAVIN:
+			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+			SDL_ShowCursor(SDL_DISABLE);
+			break;
+
+		case DEVICE_CODE_DEV:
+			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN);
+			break;
+
+
+	}
 
 	SDL_Renderer* renderer = nullptr;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -141,7 +163,7 @@ int main(int argc, char* argv[]){
 	
 	
 	// Infinite loop for our application
-	bool gameIsRunning = true;
+	bool clusterRunning = true;
 	// Main application loop
 	
 	// Open serial port
@@ -166,35 +188,77 @@ int main(int argc, char* argv[]){
 	const Uint8* state;
 	
 	int frame = 0;
+
+	vector<int> speedVector;
+	vector<int> rpmVector;
 	
 	
-	while (gameIsRunning){
+	while (clusterRunning) {
 		
 		//std::cout << "\nFrame: " << ++i << std::endl;
 		
-		// Read latest serial
-		out_length = read_serial(port, serial_output);
-		
-		if (out_length != -1) {
-			cout << "Raw serial data: '" << serial_output << "'" << endl;
-			sscanf(serial_output, "%lf|%lf", &speed, &rpm);
-			saved_speed = speed;
-			saved_rpm = rpm;
-		} else {
-			speed = saved_speed;
-			rpm = saved_rpm;
+		// Which device are we using
+		switch (device_code) {
+			case DEVICE_CODE_GAVIN:
+
+				// Read latest serial
+				out_length = read_serial(port, serial_output);
+				
+				if (out_length != -1) {
+					cout << "Raw serial data: '" << serial_output << "'" << endl;
+					sscanf(serial_output, "%lf|%lf", &speed, &rpm);
+					saved_speed = speed;
+					saved_rpm = rpm;
+				} else {
+					speed = saved_speed;
+					rpm = saved_rpm;
+				}
+				break;
+				
+			case DEVICE_CODE_DEV:
+				SDL_GetMouseState(&mouseX, &mouseY);
+				speed = ((double)(mouseX) / 7.5) + rand() % 3;
+				rpm = ((double)(mouseY) * 8) + rand() % 20;
+				break;
 		}
 		
 		//std::cout << "X: " << mouseX << "\nY: " << mouseY << std::endl;
 		
-		cout << "\n\nspeed = " << speed << "\nrpm = " << rpm << endl;
+		//cout << "\n\nspeed = " << speed << "\nrpm = " << rpm << endl;
+
+
+		// Collect most recent speed and rpm data in vectors
+		if (speedVector.size() >= SPEED_VECTOR_SIZE) {
+			speedVector.erase(speedVector.begin());
+		}
+
+		if (rpmVector.size() >= RPM_VECTOR_SIZE) {
+			rpmVector.erase(rpmVector.begin());
+		}
+
+		speedVector.push_back(speed);
+		rpmVector.push_back(rpm);
+
+		// Calculate average speed and rpm
+		speed = 0;
+		for (int i = 0; i < speedVector.size(); i++) {
+			speed += speedVector[i];
+		}
+		speed /= speedVector.size();
+
+		rpm = 0;
+		for (int i = 0; i < rpmVector.size(); i++) {
+			rpm += rpmVector[i];
+		}
+		rpm /= rpmVector.size();
+
 		
 		// (1) Handle Input
 		// Start our event loop
 		while (SDL_PollEvent(&event)){
 			// Handle each specific event
 			if (event.type == SDL_QUIT){
-				gameIsRunning = false;
+				clusterRunning = false;
 			}
 			
 			
@@ -203,19 +267,19 @@ int main(int argc, char* argv[]){
 			STATE_rightIndicator = 0;
 			STATE_headlights = 0;
 			
-			if (state[SDL_SCANCODE_LEFT]){
+			if (state[SDL_SCANCODE_LEFT]) {
 				STATE_leftIndicator = 1;
 			}
 			
-			if (state[SDL_SCANCODE_RIGHT]){
+			if (state[SDL_SCANCODE_RIGHT]) {
 				STATE_rightIndicator = 1;
 			}
 			
-			if (state[SDL_SCANCODE_UP]){
+			if (state[SDL_SCANCODE_UP]) {
 				STATE_headlights = 1;
 			}
 			
-			if (state[SDL_SCANCODE_SPACE]){
+			if (state[SDL_SCANCODE_SPACE]) {
 				STATE_leftIndicator = 1;
 				STATE_rightIndicator = 1;
 			}
@@ -313,8 +377,8 @@ int main(int argc, char* argv[]){
 		sprintf(speedChar, "%.0f", speed);
 		
 
-		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);  /////// MEMORY LEAK
-		SDL_Texture* speedTexture = SDL_CreateTextureFromSurface(renderer, speedSurface);  /////// MEMORY LEAK
+		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);
+		SDL_Texture* speedTexture = SDL_CreateTextureFromSurface(renderer, speedSurface);
 
 
 		dstSpeedText.x = SCALE * 380.0 - (double)(speedSurface->w)/2;
@@ -325,11 +389,11 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render RPM
-		sprintf(rpmChar, "%.0f", rpm);
+		sprintf(rpmChar, "%d", (((int)rpm / 50) * 50));
 		
 
-		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);  /////// MEMORY LEAK
-		rpmTexture = SDL_CreateTextureFromSurface(renderer, rpmSurface);  /////// MEMORY LEAK
+		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);
+		rpmTexture = SDL_CreateTextureFromSurface(renderer, rpmSurface);
 	
 		//frame++;
 
@@ -488,5 +552,3 @@ void print_array(char* array, int size) {
 	std::cout << std::endl;
 	
 }
-
-
