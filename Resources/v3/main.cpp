@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
 			break;
 
 		case DEVICE_CODE_DEV:
-			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN);
+			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
 			break;
 
 
