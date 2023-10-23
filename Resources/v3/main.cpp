@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
 			break;
 
 		case DEVICE_CODE_DEV:
-			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
+			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN);
 			break;
 
 
@@ -386,8 +386,8 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render Speed
-		
-		snprintf(speedChar, 10, "%.0f", speed);
+		// snprintf(speedChar, 10, "%.0f", speed);
+		sprintf(speedChar, "%.0f", speed);
 		
 
 		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);
@@ -402,7 +402,8 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render RPM
-		snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
+		// snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
+		sprintf(rpmChar, "%d", (((int)rpm / 10) * 10));
 		
 
 		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);
