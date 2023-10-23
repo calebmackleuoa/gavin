@@ -286,6 +286,10 @@ int main(int argc, char* argv[]){
 				STATE_leftIndicator = 1;
 				STATE_rightIndicator = 1;
 			}
+
+			if (state[SDL_SCANCODE_ESCAPE]) {
+				return 0;
+			}
 			
 			STATE_gavinTotal = 1 * STATE_headlights + \
 							   2 * STATE_rightIndicator + \
@@ -295,6 +299,13 @@ int main(int argc, char* argv[]){
 		// (2) Handle Updates
 		
 		i++;
+
+		// Debugging for freezing, remove once done
+		STATE_headlights = (i % 20) > 10;
+
+		STATE_gavinTotal = 1 * STATE_headlights + \
+							   2 * STATE_rightIndicator + \
+							   4 * STATE_leftIndicator;
 		
 		//speed = 240 * (sin((double)i / 50) + 1) / 2;
 		//rpm = 240 * (sin((double)(i+80) / 50) + 1) / 2;
@@ -377,7 +388,7 @@ int main(int argc, char* argv[]){
 		
 		// Render Speed
 		
-		sprintf(speedChar, "%.0f", speed);
+		snprintf(speedChar, 10, "%.0f", speed);
 		
 
 		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);
@@ -392,7 +403,7 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render RPM
-		sprintf(rpmChar, "%d", (((int)rpm / 10) * 10));
+		snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
 		
 
 		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);
