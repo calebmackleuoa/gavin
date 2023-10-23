@@ -6,7 +6,7 @@
 #ifdef __APPLE__
 int device_code = DEVICE_CODE_DEV;
 #else
-int device_code = DEVICE_CODE_DEV;
+int device_code = DEVICE_CODE_GAVIN;
 #endif
 // ——————— DEVICE CODE ——————— //
 
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]){
 
 	switch (device_code) {
 		case DEVICE_CODE_GAVIN:
-			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
 			SDL_ShowCursor(SDL_DISABLE);
 			break;
 
