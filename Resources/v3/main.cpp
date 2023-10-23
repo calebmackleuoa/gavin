@@ -1,38 +1,28 @@
+// COMPILE COMMANDS:
+/*
 
-// ——————— DEVICE CODE ——————— //
-#define DEVICE_CODE_GAVIN 0
-#define DEVICE_CODE_DEV 1
+g++ main.cpp -o output -I/Library/Frameworks/SDL2.framework/Headers -I/Library/Frameworks/SDL2_image.framework/Headers -I/Library/Frameworks/SDL2_ttf.framework/Headers -F/Library/Frameworks -framework SDL2 -framework SDL2_Image -framework SDL2_ttf
 
-#ifdef __APPLE__
-int device_code = DEVICE_CODE_DEV;
-#else
-int device_code = DEVICE_CODE_GAVIN;
-#endif
-// ——————— DEVICE CODE ——————— //
+g++ main.cpp -o output -lSDL2 -lSDL2_image -lSDL2_ttf
+
+*/
 
 #include <iostream>
 #include <cmath>
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+
 #include <algorithm>
 #include <iterator>
 #include <fcntl.h> // Contains file controls like O_RDWR
 #include <errno.h> // Error integer and strerror() function
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
-#include <vector>
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-
-using namespace std;
 
 #define SCALE 1
 #define OUTPUT_SIZE 16
-
-#define SPEED_VECTOR_SIZE 25
-#define RPM_VECTOR_SIZE 5
-
-#define RPM_SIG_FIGS 2
 
 int open_serial();
 int close_serial(int serial_port);
@@ -53,18 +43,7 @@ int main(int argc, char* argv[]){
 		std::cout << "SDL video system is ready to go\n" << std::endl;
 	}
 
-	switch (device_code) {
-		case DEVICE_CODE_GAVIN:
-			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
-			SDL_ShowCursor(SDL_DISABLE);
-			break;
-
-		case DEVICE_CODE_DEV:
-			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN);
-			break;
-
-
-	}
+	window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN); // | SDL_WINDOW_FULLSCREEN);
 
 	SDL_Renderer* renderer = nullptr;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -143,8 +122,9 @@ int main(int argc, char* argv[]){
 	// Fonts
 	TTF_Init();
 	
-	TTF_Font *speedFont = TTF_OpenFont("./fonts/conthrax-sb.ttf", 100);
-	TTF_Font *rpmFont = TTF_OpenFont("./fonts/conthrax-sb.ttf", 75);
+	TTF_Font *speedFont = TTF_OpenFont("/fonts/conthrax-sb.ttf", 100);
+	TTF_Font *rpmFont = TTF_OpenFont("/fonts/conthrax-sb.ttf", 75);
+	TTF_Font *debugFont = TTF_OpenFont("/fonts/conthrax-sb.ttf", 25);
 	
 	if (!speedFont | !rpmFont)
         std::cout << "Couldn't find/init open a ttf font." << std::endl;
@@ -162,132 +142,60 @@ int main(int argc, char* argv[]){
 	
 	
 	// Infinite loop for our application
-	bool clusterRunning = true;
+	bool gameIsRunning = true;
 	// Main application loop
 	
 	// Open serial port
-	int port = -1;
-	if (device_code == DEVICE_CODE_GAVIN) {
-		int port = open_serial();
-	}
+	int port = open_serial();
 	char serial_output[OUTPUT_SIZE];
 	int out_length;
 	
-	int saved_speed = 0;
-	int saved_rpm = 0;
-	
-	SDL_Event event;
-	SDL_Rect dstRectSpeed;
-	SDL_RendererFlip noFlip = SDL_FLIP_NONE;
-	SDL_Point needleCenterSpeed;
-	SDL_Rect dstRectRPM;
-	SDL_Point needleCenterRPM;
-	SDL_RendererFlip horizontalFlip = SDL_FLIP_HORIZONTAL;
-	SDL_Rect dstRectGavin;
-	SDL_Rect dstSpeedText;
-	SDL_Rect dstRPMText;
-	
-	const Uint8* state;
-	
-	int frame = 0;
-
-	vector<int> speedVector;
-	vector<int> rpmVector;
-	
-	
-	while (clusterRunning) {
+	while (gameIsRunning){
 		
 		//std::cout << "\nFrame: " << ++i << std::endl;
 		
-		// Which device are we using
-		switch (device_code) {
-			case DEVICE_CODE_GAVIN:
-
-				// Read latest serial
-				out_length = read_serial(port, serial_output);
-				
-				if (out_length != -1) {
-					cout << "Raw serial data: '" << serial_output << "'" << endl;
-					sscanf(serial_output, "%lf|%lf", &speed, &rpm);
-					saved_speed = speed;
-					saved_rpm = rpm;
-				} else {
-					speed = saved_speed;
-					rpm = saved_rpm;
-				}
-				break;
-				
-			case DEVICE_CODE_DEV:
-				SDL_GetMouseState(&mouseX, &mouseY);
-				speed = ((double)(mouseX) / 7.5) + rand() % 3;
-				rpm = ((double)(mouseY) * 8) + rand() % 20;
-				break;
-		}
+		// Read latest serial
+		out_length = read_serial(port, serial_output);
 		
+		if (out_length != -1) {
+			
+			sscanf(serial_output, "%lf|%lf", &speed, &rpm);
+			//std::cout << "Speed = " << speed << "\n  RPM = " << rpm << "\n\n\n" << std::endl;
+		}
+			
 		//std::cout << "X: " << mouseX << "\nY: " << mouseY << std::endl;
 		
-		cout << "\n\nspeed = " << speed << "\nrpm = " << rpm << endl;
+		SDL_Event event;
 
-
-		// Collect most recent speed and rpm data in vectors
-		if (speedVector.size() >= SPEED_VECTOR_SIZE) {
-			speedVector.erase(speedVector.begin());
-		}
-
-		if (rpmVector.size() >= RPM_VECTOR_SIZE) {
-			rpmVector.erase(rpmVector.begin());
-		}
-
-		speedVector.push_back(speed);
-		rpmVector.push_back(rpm);
-
-		// Calculate average speed and rpm
-		speed = 0;
-		for (int i = 0; i < speedVector.size(); i++) {
-			speed += speedVector[i];
-		}
-		speed /= speedVector.size();
-
-		rpm = 0;
-		for (int i = 0; i < rpmVector.size(); i++) {
-			rpm += rpmVector[i];
-		}
-		rpm /= rpmVector.size();
-
-		
 		// (1) Handle Input
 		// Start our event loop
 		while (SDL_PollEvent(&event)){
 			// Handle each specific event
 			if (event.type == SDL_QUIT){
-				clusterRunning = false;
+				gameIsRunning = false;
 			}
 			
 			
-			state = SDL_GetKeyboardState(NULL);
+			const Uint8* state = SDL_GetKeyboardState(NULL);
 			STATE_leftIndicator = 0;
 			STATE_rightIndicator = 0;
 			STATE_headlights = 0;
 			
-			if (state[SDL_SCANCODE_LEFT]) {
+			if (state[SDL_SCANCODE_LEFT]){
 				STATE_leftIndicator = 1;
 			}
 			
-			if (state[SDL_SCANCODE_RIGHT]) {
+			if (state[SDL_SCANCODE_RIGHT]){
 				STATE_rightIndicator = 1;
 			}
 			
-			if (state[SDL_SCANCODE_UP]) {
+			if (state[SDL_SCANCODE_UP]){
 				STATE_headlights = 1;
 			}
 			
-			if (state[SDL_SCANCODE_SPACE]) {
+			if (state[SDL_SCANCODE_SPACE]){
 				STATE_leftIndicator = 1;
 				STATE_rightIndicator = 1;
-			}
-
-			if (state[SDL_SCANCODE_ESCAPE]) {
-				return 0;
 			}
 			
 			STATE_gavinTotal = 1 * STATE_headlights + \
@@ -298,13 +206,6 @@ int main(int argc, char* argv[]){
 		// (2) Handle Updates
 		
 		i++;
-
-		// Debugging for freezing, remove once done
-		STATE_headlights = (i % 20) > 10;
-
-		STATE_gavinTotal = 1 * STATE_headlights + \
-							   2 * STATE_rightIndicator + \
-							   4 * STATE_leftIndicator;
 		
 		//speed = 240 * (sin((double)i / 50) + 1) / 2;
 		//rpm = 240 * (sin((double)(i+80) / 50) + 1) / 2;
@@ -318,14 +219,17 @@ int main(int argc, char* argv[]){
 		SDL_RenderCopy(renderer, baseTexture, NULL, NULL);
 		
 		// Render Speed Needle
+		SDL_Rect dstRectSpeed;
 		dstRectSpeed.x = SCALE * 380;
 		dstRectSpeed.y = SCALE * 10;
 		dstRectSpeed.w = SCALE * 360;
 		dstRectSpeed.h = SCALE * 720;
 		
+		SDL_Point needleCenterSpeed;
 		needleCenterSpeed.x = SCALE * 0;
 		needleCenterSpeed.y = SCALE * 360;
 		
+		SDL_RendererFlip noFlip = SDL_FLIP_NONE;
 		
 		// Calculate speed
 		//speed = (double)(mouseX)/5;
@@ -345,15 +249,17 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render RPM Needle
-
+		SDL_Rect dstRectRPM;
 		dstRectRPM.x = SCALE * 1180;
 		dstRectRPM.y = SCALE * 10;
 		dstRectRPM.w = SCALE * 360;
 		dstRectRPM.h = SCALE * 720;
 		
-
+		SDL_Point needleCenterRPM;
 		needleCenterRPM.x = SCALE * 360;
 		needleCenterRPM.y = SCALE * 360;
+		
+		SDL_RendererFlip horizontalFlip = SDL_FLIP_HORIZONTAL;
 		
 		// Calculate speed
 		//rpm = (double)(mouseY)/3;
@@ -371,8 +277,8 @@ int main(int argc, char* argv[]){
 		}
 		
 		
-		
 		// Render Gavin
+		SDL_Rect dstRectGavin;
 		dstRectGavin.x = SCALE * 698.6105;
 		dstRectGavin.y = SCALE * 175;
 		dstRectGavin.w = SCALE * 522.779;
@@ -386,14 +292,12 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render Speed
-		// snprintf(speedChar, 10, "%.0f", speed);
-		sprintf(speedChar, "%.0f", speed);
+		snprintf(speedChar, 10, "%.0f", speed);
 		
-
-		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);
-		SDL_Texture* speedTexture = SDL_CreateTextureFromSurface(renderer, speedSurface);
-
-
+		speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);
+		speedTexture = SDL_CreateTextureFromSurface(renderer, speedSurface);
+		
+		SDL_Rect dstSpeedText;
 		dstSpeedText.x = SCALE * 380.0 - (double)(speedSurface->w)/2;
 		dstSpeedText.y = SCALE * 365.3 - (double)(speedSurface->h)/2;
 		dstSpeedText.w = SCALE * speedSurface->w;
@@ -402,15 +306,12 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render RPM
-		// snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
-		sprintf(rpmChar, "%d", (((int)rpm / 10) * 10));
+		snprintf(rpmChar, 10, "%.0f", rpm);
 		
-
 		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);
 		rpmTexture = SDL_CreateTextureFromSurface(renderer, rpmSurface);
-	
-		//frame++;
-
+		
+		SDL_Rect dstRPMText;
 		dstRPMText.x = SCALE * 1540.0 - (double)(rpmSurface->w)/2;
 		dstRPMText.y = SCALE * 365.3 - (double)(rpmSurface->h)/2;
 		dstRPMText.w = SCALE * rpmSurface->w;
@@ -418,19 +319,8 @@ int main(int argc, char* argv[]){
 		SDL_RenderCopy(renderer, rpmTexture, NULL, &dstRPMText);
 		
 		
-		
 		// Finally show what we've drawn
 		SDL_RenderPresent(renderer);
-		
-		SDL_FreeSurface(speedSurface);
-		SDL_DestroyTexture(speedTexture);
-		
-		SDL_FreeSurface(rpmSurface);
-		SDL_DestroyTexture(rpmTexture);
-		
-		usleep(16666);
-		
-		
 	}
 
 	// We destroy our window. We are passing in the pointer
@@ -463,7 +353,7 @@ int open_serial() {
 	
 	// Open the serial port
 	// ls /dev | grep -e "cu.usbmodem*"
-	int serial_port = open("/dev/ttyACM0", O_RDONLY | O_NONBLOCK);
+	int serial_port = open("/dev/cu.usbmodem101", O_RDONLY | O_NONBLOCK);
 
 	// Check for errors
 	if(tcgetattr(serial_port, &tty) != 0) {
@@ -566,3 +456,5 @@ void print_array(char* array, int size) {
 	std::cout << std::endl;
 	
 }
+
+
