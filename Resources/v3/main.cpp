@@ -5,9 +5,8 @@
 
 #ifdef __APPLE__
 int device_code = DEVICE_CODE_DEV;
-
 #else
-int device_code = DEVICE_CODE_GAVIN;
+int device_code = DEVICE_CODE_DEV;
 #endif
 // ——————— DEVICE CODE ——————— //
 
