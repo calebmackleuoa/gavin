@@ -226,7 +226,7 @@ int main(int argc, char* argv[]){
 		
 		//std::cout << "X: " << mouseX << "\nY: " << mouseY << std::endl;
 		
-		//cout << "\n\nspeed = " << speed << "\nrpm = " << rpm << endl;
+		cout << "\n\nspeed = " << speed << "\nrpm = " << rpm << endl;
 
 
 		// Collect most recent speed and rpm data in vectors
