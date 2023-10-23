@@ -122,9 +122,9 @@ int main(int argc, char* argv[]){
 	// Fonts
 	TTF_Init();
 	
-	TTF_Font *speedFont = TTF_OpenFont("/fonts/conthrax-sb.ttf", 100);
-	TTF_Font *rpmFont = TTF_OpenFont("/fonts/conthrax-sb.ttf", 75);
-	TTF_Font *debugFont = TTF_OpenFont("/fonts/conthrax-sb.ttf", 25);
+	TTF_Font *speedFont = TTF_OpenFont("./fonts/conthrax-sb.ttf", 100);
+	TTF_Font *rpmFont = TTF_OpenFont("./fonts/conthrax-sb.ttf", 75);
+	TTF_Font *debugFont = TTF_OpenFont("./fonts/conthrax-sb.ttf", 25);
 	
 	if (!speedFont | !rpmFont)
         std::cout << "Couldn't find/init open a ttf font." << std::endl;
