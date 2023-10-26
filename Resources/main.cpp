@@ -214,7 +214,7 @@ int main(int argc, char* argv[]){
 		
 		// Which device are we using
 		switch (device_code) {
-			case DEVICE_CODE_DEV: // DEVICE_CODE_GAVIN
+			case DEVICE_CODE_GAVIN:
 
 				connection.flushInput();
 				serial_response = connection.read(9);
@@ -229,7 +229,7 @@ int main(int argc, char* argv[]){
 
 				break;
 				
-			case DEVICE_CODE_GAVIN: // DEVICE_CODE_DEV:
+			case DEVICE_CODE_DEV:
 
 				SDL_GetMouseState(&mouseX, &mouseY);
 				input_speed = ((double)(mouseX) / 7.5) + rand() % 3;
