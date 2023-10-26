@@ -5,20 +5,18 @@
 
 #ifdef __APPLE__
 int device_code = DEVICE_CODE_DEV;
-
 #else
 int device_code = DEVICE_CODE_GAVIN;
 #endif
 // ——————— DEVICE CODE ——————— //
 
+#include "external/include/serial/serial.h"
+#include <thread>
+#include <string>
 #include <iostream>
 #include <cmath>
 #include <algorithm>
 #include <iterator>
-#include <fcntl.h> // Contains file controls like O_RDWR
-#include <errno.h> // Error integer and strerror() function
-#include <termios.h> // Contains POSIX terminal control definitions
-#include <unistd.h> // write(), read(), close()
 #include <vector>
 
 #include <SDL2/SDL.h>
@@ -35,12 +33,9 @@ using namespace std;
 
 #define RPM_SIG_FIGS 2
 
-int open_serial();
-int close_serial(int serial_port);
-int read_serial(int serial_port, char* output);
 void clear_array(char* array, int size);
 void print_array(char* array, int size);
-
+bool is_number(const std::string& s);
 
 int main(int argc, char* argv[]){
 
@@ -56,7 +51,7 @@ int main(int argc, char* argv[]){
 
 	switch (device_code) {
 		case DEVICE_CODE_GAVIN:
-			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
 			SDL_ShowCursor(SDL_DISABLE);
 			break;
 
@@ -76,20 +71,20 @@ int main(int argc, char* argv[]){
 		std::cout << "SDL2_Image format not available" << std::endl;
 	}
 	
-	SDL_Surface* baseImage = IMG_Load("./images/Base.png");
-	SDL_Surface* needleImage = IMG_Load("./images/Needle.png");
-	SDL_Surface* needleCoverImage = IMG_Load("./images/Needle_cover.png");
-	SDL_Surface* overlayImage = IMG_Load("./images/Overlay.png");
+	SDL_Surface* baseImage = IMG_Load("images/Base.png");
+	SDL_Surface* needleImage = IMG_Load("images/Needle.png");
+	SDL_Surface* needleCoverImage = IMG_Load("images/Needle_cover.png");
+	SDL_Surface* overlayImage = IMG_Load("images/Overlay.png");
 	
 	SDL_Surface* gavinImages[8];
-	gavinImages[0] = IMG_Load("./images/Gavin/000.png");
-	gavinImages[1] = IMG_Load("./images/Gavin/001.png");
-	gavinImages[2] = IMG_Load("./images/Gavin/010.png");
-	gavinImages[3] = IMG_Load("./images/Gavin/011.png");
-	gavinImages[4] = IMG_Load("./images/Gavin/100.png");
-	gavinImages[5] = IMG_Load("./images/Gavin/101.png");
-	gavinImages[6] = IMG_Load("./images/Gavin/110.png");
-	gavinImages[7] = IMG_Load("./images/Gavin/111.png");
+	gavinImages[0] = IMG_Load("images/Gavin/000.png");
+	gavinImages[1] = IMG_Load("images/Gavin/001.png");
+	gavinImages[2] = IMG_Load("images/Gavin/010.png");
+	gavinImages[3] = IMG_Load("images/Gavin/011.png");
+	gavinImages[4] = IMG_Load("images/Gavin/100.png");
+	gavinImages[5] = IMG_Load("images/Gavin/101.png");
+	gavinImages[6] = IMG_Load("images/Gavin/110.png");
+	gavinImages[7] = IMG_Load("images/Gavin/111.png");
 	
 	
 	if (!baseImage || !needleImage || !needleCoverImage || !overlayImage){
@@ -144,8 +139,8 @@ int main(int argc, char* argv[]){
 	// Fonts
 	TTF_Init();
 	
-	TTF_Font *speedFont = TTF_OpenFont("./fonts/conthrax-sb.ttf", 100);
-	TTF_Font *rpmFont = TTF_OpenFont("./fonts/conthrax-sb.ttf", 75);
+	TTF_Font *speedFont = TTF_OpenFont("fonts/conthrax-sb.ttf", 100);
+	TTF_Font *rpmFont = TTF_OpenFont("fonts/conthrax-sb.ttf", 75);
 	
 	if (!speedFont | !rpmFont)
         std::cout << "Couldn't find/init open a ttf font." << std::endl;
@@ -166,13 +161,6 @@ int main(int argc, char* argv[]){
 	bool clusterRunning = true;
 	// Main application loop
 	
-	// Open serial port
-	int port = -1;
-	if (device_code == DEVICE_CODE_GAVIN) {
-		int port = open_serial();
-	}
-	char serial_output[OUTPUT_SIZE];
-	int out_length;
 	
 	int saved_speed = 0;
 	int saved_rpm = 0;
@@ -194,6 +182,22 @@ int main(int argc, char* argv[]){
 
 	vector<int> speedVector;
 	vector<int> rpmVector;
+
+	// Setting up serial
+	serial::Serial connection("/dev/tty.usbmodem1101", 115200, serial::Timeout::simpleTimeout(3000));
+
+    if (connection.isOpen()) {
+        cout << "Port opened successfully" << endl;
+    } else {
+        cout << "Port failed to open" << endl;
+        exit(1);
+    }
+    connection.flushOutput();
+
+	string serial_response;
+
+	double input_speed = 0;
+	int input_rpm = 0;
 	
 	
 	while (clusterRunning) {
@@ -202,32 +206,29 @@ int main(int argc, char* argv[]){
 		
 		// Which device are we using
 		switch (device_code) {
-			case DEVICE_CODE_GAVIN:
+			case DEVICE_CODE_DEV: // DEVICE_CODE_GAVIN
 
-				// Read latest serial
-				out_length = read_serial(port, serial_output);
-				
-				if (out_length != -1) {
-					cout << "Raw serial data: '" << serial_output << "'" << endl;
-					sscanf(serial_output, "%lf|%lf", &speed, &rpm);
-					saved_speed = speed;
-					saved_rpm = rpm;
-				} else {
-					speed = saved_speed;
-					rpm = saved_rpm;
+				connection.flushInput();
+				serial_response = connection.read(9);
+
+				if (is_number(serial_response)) {
+					input_rpm = stoi(serial_response.substr(5, -1));
+					input_speed = stoi(serial_response.substr(0, 5));
+					input_speed /= 100.0;
+					// cout << "SPEED: [" << input_speed << "]" << endl;
+					// cout << "RPM:   [" << input_rpm << "]\n" << endl;
 				}
+
 				break;
 				
-			case DEVICE_CODE_DEV:
+			case DEVICE_CODE_GAVIN: // DEVICE_CODE_DEV:
+
 				SDL_GetMouseState(&mouseX, &mouseY);
-				speed = ((double)(mouseX) / 7.5) + rand() % 3;
-				rpm = ((double)(mouseY) * 8) + rand() % 20;
+				input_speed = ((double)(mouseX) / 7.5) + rand() % 3;
+				input_rpm = ((double)(mouseY) * 8) + rand() % 20;
+
 				break;
 		}
-		
-		//std::cout << "X: " << mouseX << "\nY: " << mouseY << std::endl;
-		
-		//cout << "\n\nspeed = " << speed << "\nrpm = " << rpm << endl;
 
 
 		// Collect most recent speed and rpm data in vectors
@@ -239,8 +240,8 @@ int main(int argc, char* argv[]){
 			rpmVector.erase(rpmVector.begin());
 		}
 
-		speedVector.push_back(speed);
-		rpmVector.push_back(rpm);
+		speedVector.push_back(input_speed);
+		rpmVector.push_back(input_rpm);
 
 		// Calculate average speed and rpm
 		speed = 0;
@@ -286,6 +287,10 @@ int main(int argc, char* argv[]){
 				STATE_leftIndicator = 1;
 				STATE_rightIndicator = 1;
 			}
+
+			if (state[SDL_SCANCODE_ESCAPE]) {
+				return 0;
+			}
 			
 			STATE_gavinTotal = 1 * STATE_headlights + \
 							   2 * STATE_rightIndicator + \
@@ -295,6 +300,13 @@ int main(int argc, char* argv[]){
 		// (2) Handle Updates
 		
 		i++;
+
+		// Debugging for freezing, remove once done
+		STATE_headlights = (i % 20) > 10;
+
+		STATE_gavinTotal = 1 * STATE_headlights + \
+							   2 * STATE_rightIndicator + \
+							   4 * STATE_leftIndicator;
 		
 		//speed = 240 * (sin((double)i / 50) + 1) / 2;
 		//rpm = 240 * (sin((double)(i+80) / 50) + 1) / 2;
@@ -376,8 +388,7 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render Speed
-		
-		sprintf(speedChar, "%.0f", speed);
+		snprintf(speedChar, 10, "%.0f", speed);
 		
 
 		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);
@@ -392,7 +403,7 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render RPM
-		sprintf(rpmChar, "%d", (((int)rpm / 10) * 10));
+		snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
 		
 
 		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);
@@ -417,7 +428,7 @@ int main(int argc, char* argv[]){
 		SDL_FreeSurface(rpmSurface);
 		SDL_DestroyTexture(rpmTexture);
 		
-		usleep(16666);
+		this_thread::sleep_for(chrono::milliseconds(16));
 		
 		
 	}
@@ -445,88 +456,12 @@ int main(int argc, char* argv[]){
 	return 0;
 }
 
-int open_serial() {
 
-	// Form termios structure
-	struct termios tty;
-	
-	// Open the serial port
-	// ls /dev | grep -e "cu.usbmodem*"
-	int serial_port = open("/dev/ttyACM0", O_RDONLY | O_NONBLOCK);
-
-	// Check for errors
-	if(tcgetattr(serial_port, &tty) != 0) {
-		
-		std::cout << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
-		return -1;
-	}
-
-
-	// Set flags
-	tty.c_cflag &= ~PARENB; // Clear parity bit, disabling parity (most common)
-	tty.c_cflag &= ~CSTOPB; // Clear stop field, only one stop bit used in communication (most common)
-	tty.c_cflag &= ~CSIZE; // Clear all bits that set the data size 
-	tty.c_cflag |= CS8; // 8 bits per byte (most common)
-	tty.c_cflag &= ~CRTSCTS; // Disable RTS/CTS hardware flow control (most common)
-	tty.c_cflag |= CREAD | CLOCAL; // Turn on READ & ignore ctrl lines (CLOCAL = 1)
-	
-	tty.c_lflag |= ICANON; // Canonical mode
-	tty.c_lflag &= ~ECHO; // Disable echo
-	tty.c_lflag &= ~ECHOE; // Disable erasure
-	tty.c_lflag &= ~ECHONL; // Disable new-line echo
-	tty.c_lflag &= ~ISIG; // Disable interpretation of INTR, QUIT and SUSP
-	
-	tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
-	tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
-	
-	tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
-	tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-	
-	tty.c_cc[VTIME] = 0; // Wait time
-	tty.c_cc[VMIN] = 0; // Minimum received bytes
-	
-	cfsetispeed(&tty, B115200); // Baud input
-	cfsetospeed(&tty, B115200); // Baud output
-
-	// Set flags and report any errors
-	if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
-		
-		std::cout << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
-		return -1;
-	}
-	
-	// Flush what is currently in the buffer
-	tcflush(serial_port, TCIFLUSH);
-	
-	// Return port
-	return serial_port;
-	
-}
-
-int close_serial(int serial_port) {
-	
-	// Close the serial port
-	close(serial_port);
-	return 0;
-	
-}
-
-int read_serial(int serial_port, char* output) {
-	
-	int size = 0;
-	int saved_size = 1;
-	
-	while (size != -1) {
-		
-		size = read(serial_port, output, OUTPUT_SIZE);
-		
-		// If read() found data, overwrite previous size information
-		if (size != -1) {saved_size = size;}
-		
-	}
-	
-	return saved_size - 2;
-	
+bool is_number(const std::string& s)
+{
+    std::string::const_iterator it = s.begin();
+    while (it != s.end() && std::isdigit(*it)) ++it;
+    return !s.empty() && it == s.end();
 }
 
 
