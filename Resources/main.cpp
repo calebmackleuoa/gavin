@@ -183,8 +183,16 @@ int main(int argc, char* argv[]){
 	vector<int> speedVector;
 	vector<int> rpmVector;
 
-	// Setting up serial
-	serial::Serial connection("/dev/tty.usbmodem1101", 115200, serial::Timeout::simpleTimeout(3000));
+	// Setting up serial connection
+	string connection_location;
+
+	if (device_code == DEVICE_CODE_DEV) {
+		connection_location = "/dev/tty.1201"; // ???
+	} else {
+		connection_location = "/dev/ttyACM0";
+	}
+
+	serial::Serial connection(connection_location, 115200, serial::Timeout::simpleTimeout(3000));
 
     if (connection.isOpen()) {
         cout << "Port opened successfully" << endl;

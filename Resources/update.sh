@@ -6,7 +6,7 @@ then
     killall output
 fi
 
-echo Removing old version
+echo Removing old version`
 sudo rm -R  gavin
 
 echo Cloning update from server
