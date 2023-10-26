@@ -18,12 +18,15 @@ int device_code = DEVICE_CODE_GAVIN;
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <chrono>
+#include <stdio.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
 using namespace std;
+
 
 #define SCALE 1
 #define OUTPUT_SIZE 16
@@ -33,11 +36,15 @@ using namespace std;
 
 #define RPM_SIG_FIGS 2
 
+#define MILES_TO_KM 1.609344
+
+
 void clear_array(char* array, int size);
 void print_array(char* array, int size);
 bool is_number(const std::string& s);
 
 int main(int argc, char* argv[]){
+
 
 	SDL_Window* window = nullptr;
 	
@@ -75,6 +82,7 @@ int main(int argc, char* argv[]){
 	SDL_Surface* needleImage = IMG_Load("images/Needle.png");
 	SDL_Surface* needleCoverImage = IMG_Load("images/Needle_cover.png");
 	SDL_Surface* overlayImage = IMG_Load("images/Overlay.png");
+	SDL_Surface* shadeImage = IMG_Load("images/Gavin/shade.png");
 	
 	SDL_Surface* gavinImages[8];
 	gavinImages[0] = IMG_Load("images/Gavin/000.png");
@@ -87,7 +95,7 @@ int main(int argc, char* argv[]){
 	gavinImages[7] = IMG_Load("images/Gavin/111.png");
 	
 	
-	if (!baseImage || !needleImage || !needleCoverImage || !overlayImage){
+	if (!baseImage || !needleImage || !needleCoverImage || !overlayImage || !shadeImage){
 		std::cout << "Image loading error..." << std::endl;
 	}
 	
@@ -102,6 +110,7 @@ int main(int argc, char* argv[]){
 	SDL_Texture* needleTexture = SDL_CreateTextureFromSurface(renderer, needleImage);
 	SDL_Texture* needleCoverTexture = SDL_CreateTextureFromSurface(renderer, needleCoverImage);
 	SDL_Texture* overlayTexture = SDL_CreateTextureFromSurface(renderer, overlayImage);
+	SDL_Texture* shadeTexture = SDL_CreateTextureFromSurface(renderer, shadeImage);
 
 	SDL_Texture* gavinTextures[8];
 	for (int i = 0; i < 8; i++) {
@@ -141,17 +150,24 @@ int main(int argc, char* argv[]){
 	
 	TTF_Font *speedFont = TTF_OpenFont("fonts/conthrax-sb.ttf", 100);
 	TTF_Font *rpmFont = TTF_OpenFont("fonts/conthrax-sb.ttf", 75);
+	TTF_Font *odoFont = TTF_OpenFont("fonts/conthrax-sb.ttf", 25);
 	
 	if (!speedFont | !rpmFont)
         std::cout << "Couldn't find/init open a ttf font." << std::endl;
 	
-	SDL_Color SDL_fontColour = {255, 255, 255};
+	SDL_Color SDL_fontColour_white = {255, 255, 255};
+	SDL_Color SDL_fontColour_grey = {255, 255, 255, 100};
 	
 	SDL_Surface* speedSurface;
 	SDL_Surface* rpmSurface;
+	SDL_Surface* odoSurface;
+	SDL_Surface* tripSurface;
 	
 	SDL_Texture* speedTexture;
 	SDL_Texture* rpmTexture;
+	SDL_Texture* odoTexture;
+	SDL_Texture* tripTexture;
+	
 	
 	char speedChar[10];
 	char rpmChar[10];
@@ -166,15 +182,20 @@ int main(int argc, char* argv[]){
 	int saved_rpm = 0;
 	
 	SDL_Event event;
-	SDL_Rect dstRectSpeed;
+
 	SDL_RendererFlip noFlip = SDL_FLIP_NONE;
-	SDL_Point needleCenterSpeed;
-	SDL_Rect dstRectRPM;
-	SDL_Point needleCenterRPM;
 	SDL_RendererFlip horizontalFlip = SDL_FLIP_HORIZONTAL;
+
+	SDL_Point needleCenterSpeed;
+	SDL_Point needleCenterRPM;
+
+	SDL_Rect dstRectSpeed;
+	SDL_Rect dstRectRPM;
 	SDL_Rect dstRectGavin;
 	SDL_Rect dstSpeedText;
 	SDL_Rect dstRPMText;
+	SDL_Rect dstOdoText;
+	SDL_Rect dstTripText;
 	
 	const Uint8* state;
 	
@@ -187,7 +208,7 @@ int main(int argc, char* argv[]){
 	string connection_location;
 
 	if (device_code == DEVICE_CODE_DEV) {
-		connection_location = "/dev/tty.1201"; // ???
+		connection_location = "";
 	} else {
 		connection_location = "/dev/ttyACM0";
 	}
@@ -195,19 +216,30 @@ int main(int argc, char* argv[]){
 	serial::Serial connection(connection_location, 115200, serial::Timeout::simpleTimeout(3000));
 
     if (connection.isOpen()) {
-        cout << "Port opened successfully" << endl;
+        std::cout << "Port opened successfully" << endl;
+		connection.flushOutput();
     } else {
-        cout << "Port failed to open" << endl;
-        exit(1);
+        std::cout << "Port did not open" << endl;
     }
-    connection.flushOutput();
+
 
 	string serial_response;
 
 	double input_speed = 0;
 	int input_rpm = 0;
+
+	auto odo_time_old = std::chrono::high_resolution_clock::now();
+	auto odo_time_new = std::chrono::high_resolution_clock::now();
+	double odo_period;
+
+	long double odometer = 160000 * 1000 * MILES_TO_KM;
+	char odometer_char_array[15];
+	char odometer_char[2] = "0";
 	
+	long double trip = 0;
+	char trip_char_array[15];
 	
+
 	while (clusterRunning) {
 		
 		//std::cout << "\nFrame: " << ++i << std::endl;
@@ -265,6 +297,27 @@ int main(int argc, char* argv[]){
 		rpm /= rpmVector.size();
 
 		
+		// Calculate Odo
+		odo_time_new = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> odo_duration_calc = odo_time_new - odo_time_old;
+		odo_period = odo_duration_calc.count();
+		odo_time_old = odo_time_new;
+
+		odometer += (1000.0/3600.0) * speed * odo_period;
+		trip += (1000.0/3600.0) * speed * odo_period;
+
+		if (odometer < 1000) {
+			snprintf(odometer_char_array, 15, "%dm", (int)(odometer));
+		} else {
+			snprintf(odometer_char_array, 15, "%.1fkm", (double)(odometer/1000));
+		}
+
+		if (trip < 1000) {
+			snprintf(trip_char_array, 15, "%dm", (int)(trip));
+		} else {
+			snprintf(trip_char_array, 15, "%.3fkm", (double)(trip/1000));
+		}
+
 		// (1) Handle Input
 		// Start our event loop
 		while (SDL_PollEvent(&event)){
@@ -310,7 +363,7 @@ int main(int argc, char* argv[]){
 		i++;
 
 		// Debugging for freezing, remove once done
-		STATE_headlights = (i % 20) > 10;
+		STATE_headlights = (i % 50) > 25;
 
 		STATE_gavinTotal = 1 * STATE_headlights + \
 							   2 * STATE_rightIndicator + \
@@ -389,7 +442,9 @@ int main(int argc, char* argv[]){
 		dstRectGavin.h = SCALE * 459;
 		
 		SDL_RenderCopy(renderer, gavinTextures[STATE_gavinTotal], NULL, &dstRectGavin);
-		
+
+		// Render Shade (over gavin)
+		SDL_RenderCopy(renderer, shadeTexture, NULL, &dstRectGavin);
 		
 		// Render Overlay
 		SDL_RenderCopy(renderer, overlayTexture, NULL, NULL);
@@ -399,7 +454,7 @@ int main(int argc, char* argv[]){
 		snprintf(speedChar, 10, "%.0f", speed);
 		
 
-		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour);
+		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour_white);
 		SDL_Texture* speedTexture = SDL_CreateTextureFromSurface(renderer, speedSurface);
 
 
@@ -414,17 +469,43 @@ int main(int argc, char* argv[]){
 		snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
 		
 
-		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour);
+		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour_white);
 		rpmTexture = SDL_CreateTextureFromSurface(renderer, rpmSurface);
-	
-		//frame++;
 
 		dstRPMText.x = SCALE * 1540.0 - (double)(rpmSurface->w)/2;
 		dstRPMText.y = SCALE * 365.3 - (double)(rpmSurface->h)/2;
 		dstRPMText.w = SCALE * rpmSurface->w;
 		dstRPMText.h = SCALE * rpmSurface->h;
 		SDL_RenderCopy(renderer, rpmTexture, NULL, &dstRPMText);
-		
+
+
+		// Render Trip
+		tripSurface = TTF_RenderText_Blended(odoFont, trip_char_array, SDL_fontColour_white);
+		tripTexture = SDL_CreateTextureFromSurface(renderer, tripSurface);
+
+		dstTripText.x = SCALE * (1920/2) - (double)(tripSurface->w) + 400;
+		dstTripText.y = SCALE * 652 + (double)(tripSurface->h)/2;
+		dstTripText.w = SCALE * tripSurface->w;
+		dstTripText.h = SCALE * tripSurface->h;
+
+		SDL_RenderCopy(renderer, tripTexture, NULL, &dstTripText);
+
+
+
+		// Render Odometer
+		for (int i = 0; i < 6; i++) {
+			odometer_char[0] = odometer_char_array[i];
+			odoSurface = TTF_RenderText_Blended(odoFont, odometer_char, SDL_fontColour_grey);
+			odoTexture = SDL_CreateTextureFromSurface(renderer, odoSurface);
+
+			dstOdoText.x = SCALE * (1920/2) - 10 + (25 * ((double)i-2.5)) -5 +(10)*(i>=3);
+			dstOdoText.y = SCALE * 652 + (double)(odoSurface->h)/2;
+			dstOdoText.w = SCALE * odoSurface->w;
+			dstOdoText.h = SCALE * odoSurface->h;
+
+			SDL_RenderCopy(renderer, odoTexture, NULL, &dstOdoText);
+		}
+
 		
 		
 		// Finally show what we've drawn
@@ -435,6 +516,12 @@ int main(int argc, char* argv[]){
 		
 		SDL_FreeSurface(rpmSurface);
 		SDL_DestroyTexture(rpmTexture);
+		
+		SDL_FreeSurface(odoSurface);
+		SDL_DestroyTexture(odoTexture);
+
+		SDL_FreeSurface(tripSurface);
+		SDL_DestroyTexture(tripTexture);
 		
 		this_thread::sleep_for(chrono::milliseconds(16));
 		
