@@ -1,13 +1,15 @@
 
+
 // ——————— DEVICE CODE ——————— //
 #define DEVICE_CODE_GAVIN 0
 #define DEVICE_CODE_DEV 1
-
+/*
 #ifdef __APPLE__
 int device_code = DEVICE_CODE_DEV;
 #else
 int device_code = DEVICE_CODE_GAVIN;
 #endif
+*/
 // ——————— DEVICE CODE ——————— //
 
 #include "external/include/serial/serial.h"
@@ -20,13 +22,13 @@ int device_code = DEVICE_CODE_GAVIN;
 #include <vector>
 #include <chrono>
 #include <stdio.h>
+#include <filesystem>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
 using namespace std;
-
 
 #define SCALE 1
 #define OUTPUT_SIZE 16
@@ -45,6 +47,12 @@ bool is_number(const std::string& s);
 
 int main(int argc, char* argv[]){
 
+	auto pathname = "/dev/ttyACM0";
+
+	int device_code = DEVICE_CODE_DEV;
+	if (std::filesystem::exists(pathname)) {
+		device_code = DEVICE_CODE_GAVIN;
+	}
 
 	SDL_Window* window = nullptr;
 	
@@ -58,7 +66,8 @@ int main(int argc, char* argv[]){
 
 	switch (device_code) {
 		case DEVICE_CODE_GAVIN:
-			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
+			window = SDL_CreateWindow("Instrument Cluster", 0, 0, 1920, 720, \
+			SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
 			SDL_ShowCursor(SDL_DISABLE);
 			break;
 
@@ -232,12 +241,12 @@ int main(int argc, char* argv[]){
 	auto odo_time_new = std::chrono::high_resolution_clock::now();
 	double odo_period;
 
-	long double odometer = 160000 * 1000 * MILES_TO_KM;
-	char odometer_char_array[15];
-	char odometer_char[2] = "0";
+	double odometer = 160000 * 1000 * MILES_TO_KM;
+	char odometer_char_array[30];
+	char odometer_char[10] = "0";
 	
-	long double trip = 0;
-	char trip_char_array[15];
+	double trip = 0;
+	char trip_char_array[30];
 	
 
 	while (clusterRunning) {
