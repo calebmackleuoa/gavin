@@ -127,19 +127,12 @@ int main(int argc, char* argv[]){
 		gavinTextures[i] = SDL_CreateTextureFromSurface(renderer, gavinImages[i]);
 		
 	}
-	
-	//SDL_DisplayMode DM;
-	//SDL_GetCurrentDisplayMode(0, &DM);
-	//int Width = DM.w;
-	//int Height = DM.h;
+
 
 	int width;
 	int height;
 	SDL_GetWindowSize(window, &width, &height);
-	//SDL_GetRendererOutputSize(renderer, &width, &height);
-	
-	//std::cout << "Width: " << width << std::endl;
-	//std::cout << "Height: " << height << std::endl;
+
 	
 	int i = 0;
 	int mouseX;
@@ -176,7 +169,7 @@ int main(int argc, char* argv[]){
 	SDL_Texture* rpmTexture;
 	SDL_Texture* odoTexture;
 	SDL_Texture* tripTexture;
-	
+
 	
 	char speedChar[10];
 	char rpmChar[10];
@@ -231,7 +224,6 @@ int main(int argc, char* argv[]){
         std::cout << "Port did not open" << endl;
     }
 
-
 	string serial_response;
 
 	double input_speed = 0;
@@ -248,10 +240,10 @@ int main(int argc, char* argv[]){
 	double trip = 0;
 	char trip_char_array[30];
 	
+	string odometer_string;
 
 	while (clusterRunning) {
-		
-		//std::cout << "\nFrame: " << ++i << std::endl;
+
 		
 		// Which device are we using
 		switch (device_code) {
@@ -264,8 +256,6 @@ int main(int argc, char* argv[]){
 					input_rpm = stoi(serial_response.substr(5, -1));
 					input_speed = stoi(serial_response.substr(0, 5));
 					input_speed /= 100.0;
-					// cout << "SPEED: [" << input_speed << "]" << endl;
-					// cout << "RPM:   [" << input_rpm << "]\n" << endl;
 				}
 
 				break;
@@ -304,7 +294,6 @@ int main(int argc, char* argv[]){
 			rpm += rpmVector[i];
 		}
 		rpm /= rpmVector.size();
-
 		
 		// Calculate Odo
 		odo_time_new = std::chrono::high_resolution_clock::now();
@@ -315,11 +304,6 @@ int main(int argc, char* argv[]){
 		odometer += (1000.0/3600.0) * speed * odo_period;
 		trip += (1000.0/3600.0) * speed * odo_period;
 
-		if (odometer < 1000) {
-			snprintf(odometer_char_array, 15, "%dm", (int)(odometer));
-		} else {
-			snprintf(odometer_char_array, 15, "%.1fkm", (double)(odometer/1000));
-		}
 
 		if (trip < 1000) {
 			snprintf(trip_char_array, 15, "%dm", (int)(trip));
@@ -327,8 +311,8 @@ int main(int argc, char* argv[]){
 			snprintf(trip_char_array, 15, "%.3fkm", (double)(trip/1000));
 		}
 
-		// (1) Handle Input
-		// Start our event loop
+		// Handle Inputs
+		// Start event loop
 		while (SDL_PollEvent(&event)){
 			// Handle each specific event
 			if (event.type == SDL_QUIT){
@@ -367,7 +351,6 @@ int main(int argc, char* argv[]){
 							   4 * STATE_leftIndicator;
 
 		}
-		// (2) Handle Updates
 		
 		i++;
 
@@ -378,11 +361,6 @@ int main(int argc, char* argv[]){
 							   2 * STATE_rightIndicator + \
 							   4 * STATE_leftIndicator;
 		
-		//speed = 240 * (sin((double)i / 50) + 1) / 2;
-		//rpm = 240 * (sin((double)(i+80) / 50) + 1) / 2;
-		
-		// (3) Clear and Draw the Screen
-		// Gives us a clear "canvas"
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0xFF, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer);
 		
@@ -398,9 +376,6 @@ int main(int argc, char* argv[]){
 		needleCenterSpeed.x = SCALE * 0;
 		needleCenterSpeed.y = SCALE * 360;
 		
-		
-		// Calculate speed
-		//speed = (double)(mouseX)/5;
 		
 		// Render front of needle
 		SDL_RenderCopyEx(renderer, needleTexture, NULL, &dstRectSpeed, 1 * speed, &needleCenterSpeed, noFlip);
@@ -426,9 +401,7 @@ int main(int argc, char* argv[]){
 
 		needleCenterRPM.x = SCALE * 360;
 		needleCenterRPM.y = SCALE * 360;
-		
-		// Calculate speed
-		//rpm = (double)(mouseY)/3;
+
 		
 		// Render front of needle
 		SDL_RenderCopyEx(renderer, needleTexture, NULL, &dstRectRPM, -0.04 * rpm, &needleCenterRPM, horizontalFlip);
@@ -441,7 +414,6 @@ int main(int argc, char* argv[]){
 			// Render back of needle
 			SDL_RenderCopyEx(renderer, needleTexture, NULL, &dstRectRPM, 180, &needleCenterRPM, horizontalFlip);
 		}
-		
 		
 		
 		// Render Gavin
@@ -472,7 +444,7 @@ int main(int argc, char* argv[]){
 		dstSpeedText.w = SCALE * speedSurface->w;
 		dstSpeedText.h = SCALE * speedSurface->h;
 		SDL_RenderCopy(renderer, speedTexture, NULL, &dstSpeedText);
-		
+	
 		
 		// Render RPM
 		snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
@@ -487,7 +459,7 @@ int main(int argc, char* argv[]){
 		dstRPMText.h = SCALE * rpmSurface->h;
 		SDL_RenderCopy(renderer, rpmTexture, NULL, &dstRPMText);
 
-
+		
 		// Render Trip
 		tripSurface = TTF_RenderText_Blended(odoFont, trip_char_array, SDL_fontColour_white);
 		tripTexture = SDL_CreateTextureFromSurface(renderer, tripSurface);
@@ -498,26 +470,38 @@ int main(int argc, char* argv[]){
 		dstTripText.h = SCALE * tripSurface->h;
 
 		SDL_RenderCopy(renderer, tripTexture, NULL, &dstTripText);
-
-
-
+		
+		
 		// Render Odometer
-		for (int i = 0; i < 6; i++) {
-			odometer_char[0] = odometer_char_array[i];
-			odoSurface = TTF_RenderText_Blended(odoFont, odometer_char, SDL_fontColour_grey);
-			odoTexture = SDL_CreateTextureFromSurface(renderer, odoSurface);
+		odometer_string = to_string((int)odometer/1000);
+		
+		for (int i = 0; i < 8; i++) {
 
-			dstOdoText.x = SCALE * (1920/2) - 10 + (25 * ((double)i-2.5)) -5 +(10)*(i>=3);
-			dstOdoText.y = SCALE * 652 + (double)(odoSurface->h)/2;
-			dstOdoText.w = SCALE * odoSurface->w;
-			dstOdoText.h = SCALE * odoSurface->h;
-
-			SDL_RenderCopy(renderer, odoTexture, NULL, &dstOdoText);
+			
+			if (i < 3) {
+				odometer_char_array[i] = odometer_string[i];
+			} else if (i == 3) {
+				odometer_char_array[i] = ' ';
+			} else if (i >= 7) {
+				odometer_char_array[i] = '\0';
+			} else {
+				odometer_char_array[i] = odometer_string[i-1];
+			}
+			
 		}
+		
+		odoSurface = TTF_RenderText_Blended(odoFont, odometer_char_array, SDL_fontColour_grey);
+		odoTexture = SDL_CreateTextureFromSurface(renderer, odoSurface);
 
+		dstOdoText.x = SCALE * (1920/2) - (double)(odoSurface->w)/2;
+		dstOdoText.y = SCALE * 652 + (double)(odoSurface->h)/2;
+		dstOdoText.w = SCALE * odoSurface->w;
+		dstOdoText.h = SCALE * odoSurface->h;
+		
+		SDL_RenderCopy(renderer, odoTexture, NULL, &dstOdoText);
 		
 		
-		// Finally show what we've drawn
+		// Present Renderer
 		SDL_RenderPresent(renderer);
 		
 		SDL_FreeSurface(speedSurface);
@@ -537,25 +521,21 @@ int main(int argc, char* argv[]){
 		
 	}
 
-	// We destroy our window. We are passing in the pointer
-	// that points to the memory allocated by the 
-	// 'SDL_CreateWindow' function. Remember, this is
-	// a 'C-style' API, we don't have destructors.
 	SDL_DestroyWindow(window);
 	
-	// Free our png image surfaces
+	// Free png image surfaces
 	SDL_FreeSurface(baseImage);
 	SDL_FreeSurface(needleImage);
 	SDL_FreeSurface(needleCoverImage);
 	
-	// And destroy our textures
+	// Destroy textures
 	SDL_DestroyTexture(baseTexture);
 	SDL_DestroyTexture(needleTexture);
 	SDL_DestroyTexture(needleCoverTexture);
 
 	IMG_Quit();
 
-	// Quit our program.
+	// Quit
 	SDL_Quit();
 	return 0;
 }
