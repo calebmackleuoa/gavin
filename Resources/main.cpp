@@ -40,10 +40,13 @@ using namespace std;
 
 #define MILES_TO_KM 1.609344
 
+#define TEXT_DEBUG true
+
 
 void clear_array(char* array, int size);
 void print_array(char* array, int size);
 bool is_number(const std::string& s);
+void debug(string message);
 
 int main(int argc, char* argv[]){
 
@@ -175,7 +178,7 @@ int main(int argc, char* argv[]){
 	char rpmChar[10];
 	
 	
-	// Infinite loop for our application
+	// Infinite loop
 	bool clusterRunning = true;
 	// Main application loop
 	
@@ -242,15 +245,22 @@ int main(int argc, char* argv[]){
 	
 	string odometer_string;
 
+	std::cout << "Loop started" << std::endl;
+
 	while (clusterRunning) {
 
-		
+		debug("Beginning of loop");
+
 		// Which device are we using
 		switch (device_code) {
 			case DEVICE_CODE_GAVIN:
 
+				debug("Host is gavin");
+
 				connection.flushInput();
 				serial_response = connection.read(9);
+
+				debug("Connection read");
 
 				if (is_number(serial_response)) {
 					input_rpm = stoi(serial_response.substr(5, -1));
@@ -262,6 +272,8 @@ int main(int argc, char* argv[]){
 				
 			case DEVICE_CODE_DEV:
 
+				debug("Host is dev machine");
+
 				SDL_GetMouseState(&mouseX, &mouseY);
 				input_speed = ((double)(mouseX) / 7.5) + rand() % 3;
 				input_rpm = ((double)(mouseY) * 8) + rand() % 20;
@@ -270,6 +282,7 @@ int main(int argc, char* argv[]){
 		}
 
 
+		debug("Collecting data in vectors...");
 		// Collect most recent speed and rpm data in vectors
 		if (speedVector.size() >= SPEED_VECTOR_SIZE) {
 			speedVector.erase(speedVector.begin());
@@ -282,6 +295,8 @@ int main(int argc, char* argv[]){
 		speedVector.push_back(input_speed);
 		rpmVector.push_back(input_rpm);
 
+
+		debug("Calculating speed and rpm...");
 		// Calculate average speed and rpm
 		speed = 0;
 		for (int i = 0; i < speedVector.size(); i++) {
@@ -295,6 +310,7 @@ int main(int argc, char* argv[]){
 		}
 		rpm /= rpmVector.size();
 		
+		debug("Calculating odometer...");
 		// Calculate Odo
 		odo_time_new = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> odo_duration_calc = odo_time_new - odo_time_old;
@@ -304,19 +320,21 @@ int main(int argc, char* argv[]){
 		odometer += (1000.0/3600.0) * speed * odo_period;
 		trip += (1000.0/3600.0) * speed * odo_period;
 
-
+		debug("Printing speed and rpm to char arrays...");
 		if (trip < 1000) {
 			snprintf(trip_char_array, 15, "%dm", (int)(trip));
 		} else {
 			snprintf(trip_char_array, 15, "%.3fkm", (double)(trip/1000));
 		}
 
+		debug("Registering input events");
 		// Handle Inputs
 		// Start event loop
 		while (SDL_PollEvent(&event)){
 			// Handle each specific event
 			if (event.type == SDL_QUIT){
 				clusterRunning = false;
+				debug("Quit button pressed");
 			}
 			
 			
@@ -327,23 +345,29 @@ int main(int argc, char* argv[]){
 			
 			if (state[SDL_SCANCODE_LEFT]) {
 				STATE_leftIndicator = 1;
+				debug("Left indicator key pressed");
 			}
 			
 			if (state[SDL_SCANCODE_RIGHT]) {
 				STATE_rightIndicator = 1;
+				debug("Right indicator key pressed");
 			}
 			
 			if (state[SDL_SCANCODE_UP]) {
 				STATE_headlights = 1;
+				debug("Headlights key pressed");
 			}
 			
 			if (state[SDL_SCANCODE_SPACE]) {
 				STATE_leftIndicator = 1;
 				STATE_rightIndicator = 1;
+				debug("Hazards key pressed");
 			}
 
 			if (state[SDL_SCANCODE_ESCAPE]) {
+				debug("Quit key pressed");
 				return 0;
+				
 			}
 			
 			STATE_gavinTotal = 1 * STATE_headlights + \
@@ -361,9 +385,12 @@ int main(int argc, char* argv[]){
 							   2 * STATE_rightIndicator + \
 							   4 * STATE_leftIndicator;
 		
+		debug("Renderer setup...");
+
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0xFF, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer);
 		
+		debug("Rendering base texture...");
 		// Render Base
 		SDL_RenderCopy(renderer, baseTexture, NULL, NULL);
 		
@@ -376,7 +403,7 @@ int main(int argc, char* argv[]){
 		needleCenterSpeed.x = SCALE * 0;
 		needleCenterSpeed.y = SCALE * 360;
 		
-		
+		debug("Rendering speed needle...");
 		// Render front of needle
 		SDL_RenderCopyEx(renderer, needleTexture, NULL, &dstRectSpeed, 1 * speed, &needleCenterSpeed, noFlip);
 
@@ -402,7 +429,7 @@ int main(int argc, char* argv[]){
 		needleCenterRPM.x = SCALE * 360;
 		needleCenterRPM.y = SCALE * 360;
 
-		
+		debug("Rendering RPM needle...");
 		// Render front of needle
 		SDL_RenderCopyEx(renderer, needleTexture, NULL, &dstRectRPM, -0.04 * rpm, &needleCenterRPM, horizontalFlip);
 
@@ -422,19 +449,22 @@ int main(int argc, char* argv[]){
 		dstRectGavin.w = SCALE * 522.779;
 		dstRectGavin.h = SCALE * 459;
 		
+		debug("Rendering Gavin image...");
 		SDL_RenderCopy(renderer, gavinTextures[STATE_gavinTotal], NULL, &dstRectGavin);
 
+		debug("Rendering Gavin shade...");
 		// Render Shade (over gavin)
 		SDL_RenderCopy(renderer, shadeTexture, NULL, &dstRectGavin);
 		
+		debug("Rendering overlay...");
 		// Render Overlay
 		SDL_RenderCopy(renderer, overlayTexture, NULL, NULL);
 		
-		
+		debug("Printing speed to char array...");
 		// Render Speed
 		snprintf(speedChar, 10, "%.0f", speed);
 		
-
+		debug("Rendering speed...");
 		SDL_Surface* speedSurface = TTF_RenderText_Blended(speedFont, speedChar, SDL_fontColour_white);
 		SDL_Texture* speedTexture = SDL_CreateTextureFromSurface(renderer, speedSurface);
 
@@ -445,11 +475,12 @@ int main(int argc, char* argv[]){
 		dstSpeedText.h = SCALE * speedSurface->h;
 		SDL_RenderCopy(renderer, speedTexture, NULL, &dstSpeedText);
 	
-		
+
+		debug("Printing speed to char array...");
 		// Render RPM
 		snprintf(rpmChar, 10, "%d", (((int)rpm / 10) * 10));
 		
-
+		debug("Rendering speed...");
 		rpmSurface = TTF_RenderText_Blended(rpmFont, rpmChar, SDL_fontColour_white);
 		rpmTexture = SDL_CreateTextureFromSurface(renderer, rpmSurface);
 
@@ -461,6 +492,7 @@ int main(int argc, char* argv[]){
 
 		
 		// Render Trip
+		debug("Rendering trip...");
 		tripSurface = TTF_RenderText_Blended(odoFont, trip_char_array, SDL_fontColour_white);
 		tripTexture = SDL_CreateTextureFromSurface(renderer, tripSurface);
 
@@ -473,10 +505,10 @@ int main(int argc, char* argv[]){
 		
 		
 		// Render Odometer
+		debug("Rendering odometer...");
 		odometer_string = to_string((int)odometer/1000);
 		
 		for (int i = 0; i < 8; i++) {
-
 			
 			if (i < 3) {
 				odometer_char_array[i] = odometer_string[i];
@@ -502,8 +534,10 @@ int main(int argc, char* argv[]){
 		
 		
 		// Present Renderer
+		debug("Presenting renderer...");
 		SDL_RenderPresent(renderer);
-		
+	
+		debug("Freeing surfaces and textures...");
 		SDL_FreeSurface(speedSurface);
 		SDL_DestroyTexture(speedTexture);
 		
@@ -521,21 +555,24 @@ int main(int argc, char* argv[]){
 		
 	}
 
+	debug("Destroying window...");
 	SDL_DestroyWindow(window);
 	
+	debug("Freeing image surfaces...");
 	// Free png image surfaces
 	SDL_FreeSurface(baseImage);
 	SDL_FreeSurface(needleImage);
 	SDL_FreeSurface(needleCoverImage);
 	
+	debug("Freeing image textures...");
 	// Destroy textures
 	SDL_DestroyTexture(baseTexture);
 	SDL_DestroyTexture(needleTexture);
 	SDL_DestroyTexture(needleCoverTexture);
 
-	IMG_Quit();
-
 	// Quit
+	debug("Quitting SDL...");
+	IMG_Quit();
 	SDL_Quit();
 	return 0;
 }
@@ -573,4 +610,11 @@ void print_array(char* array, int size) {
 	
 	std::cout << std::endl;
 	
+}
+
+
+void debug(string message) {
+    
+    if (TEXT_DEBUG) { std::cout << message << std::endl; }
+    
 }
