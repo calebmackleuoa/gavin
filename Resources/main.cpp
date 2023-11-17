@@ -63,6 +63,7 @@ int main(int argc, char* argv[]){
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		std::cout << "SDL could not be initialized: " << SDL_GetError() << std::endl;
+		exit(1);
 	} else {
 		std::cout << "SDL video system is ready to go\n" << std::endl;
 	}
@@ -81,8 +82,25 @@ int main(int argc, char* argv[]){
 
 	}
 
+	if (window == nullptr) {
+		std::cout << "SDL window creation failed: " << SDL_GetError() << std::endl;
+		exit(1);
+	} else {
+		std::cout << "SDL window created successfully\n" << std::endl;
+	}
+
+
+
 	SDL_Renderer* renderer = nullptr;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	if (renderer == nullptr) {
+		std::cout << "SDL renderer creation failed: " << SDL_GetError() << std::endl;
+		exit(1);
+	} else {
+		std::cout << "SDL renderer created successfully\n" << std::endl;
+	}
+
 
 	int flags = IMG_INIT_PNG;
 	int initStatus = IMG_Init(flags);
